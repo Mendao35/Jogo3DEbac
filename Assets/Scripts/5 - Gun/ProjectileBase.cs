@@ -20,6 +20,15 @@ public class ProjectileBase : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        
+        var damageble = collision.transform.GetComponent<IDamageble>();//Se bater em algum objeto que tenha a interface Idemageble ele tera um valor
+       
+        if (damageble != null)
+        {
+            damageble.Demage(demageAmount);
+
+            Destroy(gameObject);
+        }
+
+
     }
 }

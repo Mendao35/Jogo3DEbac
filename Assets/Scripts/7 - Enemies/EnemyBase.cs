@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Animations;
+using TMPro;
 
 public class EnemyBase : MonoBehaviour, IDamageble
 {
@@ -22,6 +23,8 @@ public class EnemyBase : MonoBehaviour, IDamageble
     [SerializeField]
     private float _currentLife;
 
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI lifeText; //Amostrar Vida
 
     private void Awake()
     {
@@ -31,6 +34,7 @@ public class EnemyBase : MonoBehaviour, IDamageble
     protected void ResetLife()
     {
         _currentLife = startLife;
+        UpdateLifeText(); //Atualiza texto da vida
     }
 
     protected virtual void Init()
@@ -68,9 +72,20 @@ public class EnemyBase : MonoBehaviour, IDamageble
 
         _currentLife -= f;
 
-        if(_currentLife <= 0)
+        _currentLife = Mathf.Clamp(_currentLife, 0, startLife); // Garante que não fique negativo
+        UpdateLifeText(); //Atualiza texto da vida
+
+        if (_currentLife <= 0)
         {
             Kill();
+        }
+    }
+
+    private void UpdateLifeText() //Void para atualizar texto da vida
+    {
+        if (lifeText != null)
+        {
+            lifeText.text = _currentLife.ToString("F0"); // Mostra vida como número inteiro
         }
     }
 
